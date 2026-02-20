@@ -1,0 +1,21 @@
+<h1>Show</h1>
+<p>
+  Datetime:
+  <%= @workout_record.performed_at.strftime("%Y/%m/%d %H:%M") %>
+</p>
+<p>
+  Exercise:
+  <%= @workout_record.exercise.name %>
+</p>
+<p>
+  Weight:
+  <%= @workout_record.weight %>
+</p>
+<p>
+  reps:
+  <%= @workout_record.reps %>
+</p>
+<p>
+  Memo:
+  <%= @workout_record.memo %>
+</p>

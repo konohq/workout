@@ -1,0 +1,26 @@
+<h1>Let's Workout!</h1>
+<%= form_with model: @workout_record do |f| %>
+<div>
+  <%= f.label :datetime, "日付" %>
+  <%= f.datetime_field :performed_at %>
+</div>
+<div>
+  <%= f.label :name, "種目" %>
+  <%= f.text_field :name, placeholder: "種目名を入力してください" %>
+</div>
+<div>
+  <%= f.label :weight, "重量" %>
+  <%= f.number_field :weight, placeholder: "Kg" %> 
+</div>
+<div>
+  <%= f.label :reps, "回数" %>
+  <%= f.number_field :reps, placeholder: "回" %>
+</div>
+<div>
+  <%= f.label :memo, "メモ" %>
+  <%= f.text_field :memo %>
+</div>
+<div>
+  <%= f.submit "保存"%>
+</div>
+<% end %>
