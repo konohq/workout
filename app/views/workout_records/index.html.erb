@@ -1,10 +1,53 @@
-<h1>WorkOuts!!</h1>
-<table>
-<tr>
-  <th>日時</th>
-  <th>種目名</th>
-  <th>重量</th>
-  <th>回数</th>
-  <th>メモ</th>
+<div class="container mx-auto py-4">
+  <div class="border-b-2 border-gray-400 pb-2 mb-6 flex justify-between items-center">
+  <h1 class="lg:text-7xl font-bold">WorkoutDiary!!</h1>
+  <%= link_to "記録する", new_workout_record_path, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-2 rounded" %>
+  <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: " bg-red-500 hover:bg-red-800 text-white font-bold px-6 py-2 rounded"%>
+</div>
+
+
+<h2 class="text-3xl font-bold mb-4">筋トレ記録一覧</h2>
+<table class="min-w-full border border-gray-300">
+<tr class="border-b">
+  <th class="py-2 px-4 text-left align-middle">日時</th>
+  <th class="py-2 px-4 text-left align-middle">種目名</th>
+  <th class="py-2 px-4 text-left align-middle">重量</th>
+  <th class="py-2 px-4 text-left align-middle">回数</th>
+  <th class="py-2 px-4 text-left align-middle">メモ</th>
 </tr>
+
+  <% @workout_records
+      .group_by { |w| w.performed_at.to_date }
+      .each do |date, records| %>
+  <tr class="bg-gray-200">
+    <td colspan="7" class="py-2 px-4 font-bold">
+    <%= date.strftime("%Y年%m月%d日") %>
+    </td>
+  </tr>    
+
+<% records.each do |w| %>
+  <tr class="border-b">
+    <td class="py-2 px-4 text-left align-middle"><%= w.performed_at.strftime("%Y/%m/%d %H:%M") %></td>
+
+    <td class="py-2 px-4 text-left align-middle"><%= w.exercise.name %></td>
+
+    <td class="py-2 px-4 text-left align-middle">
+    <% if w.weight.present? %>
+      <%= w.weight %>Kg
+    <% else %>
+     自重
+     <% end %>
+    </td>
+
+    <td class="py-2 px-4 text-left align-middle"><%= w.reps %>回</td>
+    <td class="py-2 px-4 text-left align-middle"><%= w.memo %></td>
+    <!--<td><%= link_to 'show', workout_record_path(w) %></td>-->
+    <td><%= link_to '編集', edit_workout_record_path(w),class: "bg-blue-500 hover:bg-blue-600 text-white p-1 rounded" %></td>
+    <td><%= link_to '削除', workout_record_path(w),
+     data: { turbo_method: "delete",
+      turbo_confirm: "削除しますか?"}, class: "bg-red-500 hover:bg-red-800 text-white font-bold p-1 rounded" %>
+    </td>
+  </tr>
+    <% end %>
+  <% end %>
 </table>

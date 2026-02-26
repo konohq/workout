@@ -3,7 +3,9 @@ class WorkoutRecordsController < ApplicationController
 
   # 筋トレ記録一覧
   def index
-    @workout_record =WorkoutRecord.all
+    @workout_records = current_user.workout_records
+                                   .includes(:exercise)
+                                   .order(performed_at: :desc)
   end
 
   # 筋トレ記録詳細
@@ -22,30 +24,40 @@ class WorkoutRecordsController < ApplicationController
   # 筋トレ記録登録
   def create
     exercise_name = workout_params[:name].to_s.strip
-    exercise = current_user.exercises.find_or_create_by!(name: exercise_name)
-    raise "種目の保存に失敗しました" unless exercise.persisted?
+    exercise = current_user.exercises.find_or_create_by(name: exercise_name)
     @workout_record = current_user.workout_records.new(
-    workout_params.except(:name).merge(exercise_id: exercise.id)
-  )
+      workout_params.except(:name)
+    )
+    @workout_record.exercise = exercise
 
     if @workout_record.save
     redirect_to @workout_record, notice: "保存完了！"
     else
-      flash.now[:alert] = @workout_record.errors.full_messages.join(", ")
-      render :new , status: :unprocessable_entity
+      render 'new' , status: :unprocessable_entity
     end
   end
 
   # 筋トレ記録編集
   def edit
+    @workout_record = WorkoutRecord.find(params[:id])
   end
-
+  
   # 筋トレ記録更新
   def update
+    @workout_record = WorkoutRecord.find(params[:id])
+    if @workout_record.update(workout_params)
+      redirect_to @workout_record
+    else
+      render 'edit', status: unprocessable_entity
+    end
   end
 
   # 筋トレ記録削除
   def destroy
+    @workout_record = WorkoutRecord.find(params[:id])
+    @workout_record.destroy
+    redirect_to workout_record_path
+    
   end
   
   private
