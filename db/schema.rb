@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_26_034702) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_28_062503) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -34,6 +34,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_26_034702) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "workout_diaries", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "exercise_id"
+    t.datetime "performed_at"
+    t.text "memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "date"
+    t.index ["exercise_id"], name: "index_workout_diaries_on_exercise_id"
+    t.index ["user_id"], name: "index_workout_diaries_on_user_id"
+  end
+
   create_table "workout_records", force: :cascade do |t|
     t.decimal "weight"
     t.integer "reps"
@@ -44,11 +56,27 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_26_034702) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.bigint "workout_diary_id", null: false
     t.index ["exercise_id"], name: "index_workout_records_on_exercise_id"
     t.index ["user_id"], name: "index_workout_records_on_user_id"
+    t.index ["workout_diary_id"], name: "index_workout_records_on_workout_diary_id"
+  end
+
+  create_table "workout_sets", force: :cascade do |t|
+    t.bigint "workout_diary_id", null: false
+    t.float "weight"
+    t.integer "reps"
+    t.text "memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["workout_diary_id"], name: "index_workout_sets_on_workout_diary_id"
   end
 
   add_foreign_key "exercises", "users"
+  add_foreign_key "workout_diaries", "exercises"
+  add_foreign_key "workout_diaries", "users"
   add_foreign_key "workout_records", "exercises"
   add_foreign_key "workout_records", "users"
+  add_foreign_key "workout_records", "workout_diaries"
+  add_foreign_key "workout_sets", "workout_diaries"
 end

@@ -14,5 +14,15 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root "workout_records#index"
-  resources :workout_records
+  
+  get "workout_records/previous_record", to: "workout_records#previous_record"
+  
+  resources :workout_records do
+  collection do
+    get :previous_record
+  end
+ end
 end
+
+
+

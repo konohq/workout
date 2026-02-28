@@ -1,36 +1,54 @@
-<%= form_with model: @workout_record do |f| %>
+<%= form_with model: @workout_record, local: true, id: "workout_form" do |f| %>
+  <%= f.hidden_field :workout_diary_id %>
+
   <% if @workout_record.errors.any? %>
-    <div class ="bg-red-100 text-red-700 p-3 rounded mb-4">
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
       <ul>
         <% @workout_record.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-  <div class="container mx-auto py-4">
-  <div class="border-b-2 border-gray-400 pb-2 mb-6 flex justify-between items-center">
-<div class="mb-4">
-  <%= f.label :datetime, "日付",class: "block font-bold mb-1" %>
-  <%= f.datetime_field :performed_at, class: "w-full border border-gray-300 px-4 py-2 hover:bg-blue-100" %>
-</div>
-<div class="mb-4">
-  <%= f.label :name, "種目", class: "block font-bold mb-1 placeholder-gray-400" %>
-  <%= f.text_field :name, placeholder: "種目名を入力してください", class: "w-full border border-gray-200 px-3 py-2 bg-white rounded" %>
-</div>
-<div class="mb-4">
-  <%= f.label :weight, "重量", class: "block font-bold mb-1 " %>
-  <%= f.number_field :weight, placeholder: "Kg", class: "w-full border border-gray-200 px-3 py-2 bg-white rounded" %> 
-</div>
-<div class="mb-4">
-  <%= f.label :reps, "回数", class: "block font-bold mb-1" %>
-  <%= f.number_field :reps, placeholder: "回", class: "w-full border border-gray-200 px-3 py-2 bg-white rounded" %>
-</div>
-<div class="mb-4">
-  <%= f.label :memo, "メモ", class: "block font-bold mb-1" %>
-  <%= f.text_field :memo, class: "w-full border border-gray-200 px-3 py-2 bg-white rounded" %>
-</div>
-<div class="mb-4">
-  <%= f.submit "保存", class: "bg-blue-500 hover:bg-blue-600 text-white p-1 rounded"%>
-</div>
+
+  <div class="container mx-auto py-4 px-2 sm:px-4 md:px-6 lg:px-8">
+    <div class="border-b-2 border-gray-400 pb-2 mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+
+      <!-- 日付 -->
+      <div class="flex-1">
+        <%= f.label :performed_at, "日付", class: "block font-bold mb-1" %>
+        <%= f.datetime_field :performed_at, class: "w-full border border-gray-300 px-4 py-2 hover:bg-blue-100 rounded" %>
+      </div>
+
+      <!-- 種目名 -->
+      <div class="flex-1">
+        <%= f.label :name, "種目", class: "block font-bold mb-1" %>
+        <%= f.text_field :name, placeholder: "種目名を入力してください", class: "w-full border border-gray-200 px-3 py-2 bg-white rounded hover:bg-blue-100", id: "workout_record_name" %>
+      </div>
+
+      <!-- 重量 -->
+      <div class="flex-1">
+        <%= f.label :weight, "重量", class: "block font-bold mb-1" %>
+        <%= f.number_field :weight, placeholder: "Kg", class: "w-full border border-gray-300 px-3 py-2 rounded", id: "weight_input" %>
+      </div>
+
+      <!-- 回数 -->
+      <div class="flex-1">
+        <%= f.label :reps, "回数", class: "block font-bold mb-1" %>
+        <%= f.number_field :reps, placeholder: "回", class: "w-full border border-gray-300 px-3 py-2 rounded", id: "reps_input" %>
+      </div>
+
+      <!-- メモ -->
+      <div class="flex-1">
+        <%= f.label :memo, "メモ", class: "block font-bold mb-1" %>
+        <%= f.text_field :memo, class: "w-full border border-gray-200 px-3 py-2 bg-white rounded hover:bg-blue-100" %>
+      </div>
+
+      <!-- 保存ボタン -->
+      <div>
+        <%= f.submit "保存", class: "bg-blue-500 hover:bg-blue-600 text-white p-2 rounded w-full sm:w-auto" %>
+      </div>
+
+    </div>
+  </div>
 <% end %>
