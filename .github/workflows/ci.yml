@@ -99,3 +99,8 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+          
+      - name: Ensure bin scripts are executable
+  run: chmod +x bin/rails bin/brakeman bin/importmap bin/rubocop
+
+  
