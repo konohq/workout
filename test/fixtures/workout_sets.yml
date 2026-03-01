@@ -2,12 +2,5 @@
 
 one:
   workout_diary: one
-  weight: 1.5
-  reps: 1
-  memo: MyText
-
-two:
-  workout_diary: two
-  weight: 1.5
-  reps: 1
-  memo: MyText
+  weight: 100
+  reps: 10

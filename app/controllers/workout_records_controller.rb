@@ -49,7 +49,7 @@ end
   def create
     exercise_name = workout_record_params[:name].to_s.strip
     exercise = current_user.exercises.find_or_create_by(name: exercise_name)
-    
+
     @workout_record = current_user.workout_records.new(
       workout_record_params.except(:name)
     )
@@ -58,7 +58,7 @@ end
     if @workout_record.save
     redirect_to workout_records_path, notice: "保存しました"
     else
-      render 'new' , status: :unprocessable_entity
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -66,7 +66,7 @@ end
   def edit
     @workout_record = WorkoutRecord.find(params[:id])
   end
-  
+
   # 筋トレ記録更新
   def update
     @workout_record = WorkoutRecord.find(params[:id])
@@ -78,7 +78,7 @@ end
     if @workout_record.update(workout_record_params.except(:name))
       redirect_to workout_records_path, notice: "更新しました"
     else
-      render 'edit', status: :unprocessable_entity
+      render "edit", status: :unprocessable_entity
     end
   end
 
@@ -87,9 +87,8 @@ end
     @workout_record = WorkoutRecord.find(params[:id])
     @workout_record.destroy
     redirect_to workout_record_path, notice: "削除しました"
-    
   end
-  
+
   private
   def workout_record_params
     params.require(:workout_record).permit(:performed_at, :name, :weight, :reps, :memo, :workout_diary_id)
