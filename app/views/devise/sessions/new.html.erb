@@ -1,0 +1,45 @@
+<h2 class="text-2xl font-bold mb-6">Log in</h2>
+
+<%= form_with model: resource, as: resource_name, url: session_path(resource_name), local: true, id: "login_form" do |f| %>
+
+  <% if resource.errors.any? %>
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+      <ul>
+        <% resource.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="container mx-auto py-4 px-2 sm:px-4 md:px-6 lg:px-8 space-y-4">
+
+    <!-- メールアドレス -->
+    <div class="flex flex-col">
+      <%= f.label :email, class: "block font-bold mb-1" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full border border-gray-300 px-3 py-2 rounded hover:bg-blue-100" %>
+    </div>
+
+    <!-- パスワード -->
+    <div class="flex flex-col">
+      <%= f.label :password, class: "block font-bold mb-1" %>
+      <%= f.password_field :password, autocomplete: "current-password", class: "w-full border border-gray-300 px-3 py-2 rounded hover:bg-blue-100" %>
+    </div>
+
+    <!-- ログイン保持 -->
+    <% if devise_mapping.rememberable? %>
+      <div class="flex items-center space-x-2">
+        <%= f.check_box :remember_me, class: "w-4 h-4" %>
+        <%= f.label :remember_me, class: "text-gray-700" %>
+      </div>
+    <% end %>
+
+    <!-- ログインボタン -->
+    <div>
+      <%= f.submit "Log in", class: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto" %>
+    </div>
+
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

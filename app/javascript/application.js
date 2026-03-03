@@ -2,27 +2,47 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbo:load", () => {
   const nameInput = document.getElementById("workout_record_name");
   const weightInput = document.getElementById("weight_input");
   const repsInput = document.getElementById("reps_input");
 
+  if (!nameInput || !weightInput || !repsInput) return;
+
+  let timeout = null;
+
   nameInput.addEventListener("input", () => {
     const name = nameInput.value.trim();
 
-    if (name.length === 0) {
-      weightInput.placeholder = "Kg";
-      repsInput.placeholder = "回";
-      return;
-    }
+    clearTimeout(timeout);
 
-    // Ajaxで前回データ取得
-    fetch(`/workout_records/previous_record?name=${encodeURIComponent(name)}`)
-      .then(response => response.json())
-      .then(data => {
-        // 前回結果を placeholder に表示
-        weightInput.placeholder = data.weight ? `前回結果 ${data.weight}Kg` : "Kg";
-        repsInput.placeholder = data.reps ? `前回結果 ${data.reps}回` : "回";
-      });
+    timeout = setTimeout(() => {
+      if (name.length === 0) {
+        weightInput.placeholder = "Kg";
+        repsInput.placeholder = "回";
+        return;
+      }
+
+      fetch(`/workout_records/previous_record?name=${encodeURIComponent(name)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.weight !== null && data.weight !== undefined) {
+            weightInput.placeholder = `前回結果 ${data.weight}Kg`;
+          } else {
+            weightInput.placeholder = "Kg";
+          }
+
+          if (data.reps !== null && data.reps !== undefined) {
+            repsInput.placeholder = `前回結果 ${data.reps}回`;
+          } else {
+            repsInput.placeholder = "回";
+          }
+        })
+        .catch(() => {
+          weightInput.placeholder = "Kg";
+          repsInput.placeholder = "回";
+        });
+
+    }, 500); // ← 入力止まって0.5秒後に実行
   });
 });
