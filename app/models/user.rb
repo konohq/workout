@@ -23,3 +23,4 @@ class User < ApplicationRecord
     exercises.find_or_create_by(name: name.strip)
   end
 end
+
