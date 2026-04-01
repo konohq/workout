@@ -63,4 +63,4 @@ group :test do
 end
   gem "devise"
 gem "tailwindcss-rails", "~> 4.4"
-gem "minitest", "~> 5.20"
+gem "minitest", "~> 6.0"
